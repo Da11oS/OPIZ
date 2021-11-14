@@ -1,0 +1,16 @@
+E:\Study\7 семестр\ОПИЗ\OPIZ\OPIZ\bin\Debug\net5.0\OPIZ.exe
+E:\Study\7 семестр\ОПИЗ\OPIZ\OPIZ\bin\Debug\net5.0\OPIZ.deps.json
+E:\Study\7 семестр\ОПИЗ\OPIZ\OPIZ\bin\Debug\net5.0\OPIZ.runtimeconfig.json
+E:\Study\7 семестр\ОПИЗ\OPIZ\OPIZ\bin\Debug\net5.0\OPIZ.runtimeconfig.dev.json
+E:\Study\7 семестр\ОПИЗ\OPIZ\OPIZ\bin\Debug\net5.0\OPIZ.dll
+E:\Study\7 семестр\ОПИЗ\OPIZ\OPIZ\bin\Debug\net5.0\ref\OPIZ.dll
+E:\Study\7 семестр\ОПИЗ\OPIZ\OPIZ\bin\Debug\net5.0\OPIZ.pdb
+E:\Study\7 семестр\ОПИЗ\OPIZ\OPIZ\obj\Debug\net5.0\OPIZ.csprojAssemblyReference.cache
+E:\Study\7 семестр\ОПИЗ\OPIZ\OPIZ\obj\Debug\net5.0\OPIZ.GeneratedMSBuildEditorConfig.editorconfig
+E:\Study\7 семестр\ОПИЗ\OPIZ\OPIZ\obj\Debug\net5.0\OPIZ.AssemblyInfoInputs.cache
+E:\Study\7 семестр\ОПИЗ\OPIZ\OPIZ\obj\Debug\net5.0\OPIZ.AssemblyInfo.cs
+E:\Study\7 семестр\ОПИЗ\OPIZ\OPIZ\obj\Debug\net5.0\OPIZ.csproj.CoreCompileInputs.cache
+E:\Study\7 семестр\ОПИЗ\OPIZ\OPIZ\obj\Debug\net5.0\OPIZ.dll
+E:\Study\7 семестр\ОПИЗ\OPIZ\OPIZ\obj\Debug\net5.0\ref\OPIZ.dll
+E:\Study\7 семестр\ОПИЗ\OPIZ\OPIZ\obj\Debug\net5.0\OPIZ.pdb
+E:\Study\7 семестр\ОПИЗ\OPIZ\OPIZ\obj\Debug\net5.0\OPIZ.genruntimeconfig.cache
