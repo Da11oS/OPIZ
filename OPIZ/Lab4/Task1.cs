@@ -30,7 +30,7 @@ namespace OPIZ.Lab4
             return string.Join("\n", result.Select(x => $"{x.i :00}  {x.x:00.000}   {x.y:00.000} {f(x.x, x.y):00.000}"));
         }
 
-        protected virtual IEnumerable<(int i, double x, double y)> GetStepValues()
+        public virtual IEnumerable<(int i, double x, double y)> GetStepValues()
         {
             var x = _section.begin;
             var y = y0;
@@ -54,7 +54,7 @@ namespace OPIZ.Lab4
             return string.Join("\n", result.Select(x => $"{x.i:00}  {x.x:00.000}   {x.y:00.000} {f(x.x, x.y):00.000}"));
         }
 
-        protected override IEnumerable<(int i, double x, double y)> GetStepValues()
+        public override IEnumerable<(int i, double x, double y)> GetStepValues()
         {
             var x = _section.begin;
             var y = y0;
@@ -73,30 +73,40 @@ namespace OPIZ.Lab4
     }
     class Adams : Eyler
     {
+        private Eyler _eylerMethod;
+        private List<(int i, double x, double y)> _results;
         public Adams(double y0, double h, (double begin, double end) section, Func<double, double, double> f) : base(y0, h, section, f)
         {
+            _results = new ();
+
+            _eylerMethod = new Eyler(y0, h, (_section.begin, section.begin + h * 3), f);
         }
         public string Task1()
         {
-            var result = GetStepValues();
-            return string.Join("\n", result.Select(x => $"{x.i:00}  {x.x:00.000}   {x.y:00.000} {f(x.x, x.y):00.000}"));
+            SetResults();
+            return string.Join("\n", _results.Select(x => $"{x.i:00}  {x.x:00.000}   {x.y:00.000} {f(x.x, x.y):00.000}"));
         }
-
-        protected override IEnumerable<(int i, double x, double y)> GetStepValues()
+        public void SetResults()
         {
-            var x = _section.begin;
-            var y = y0;
-            int i = 0;
-            do
+            //_results.Add((0, _section.begin, y0));
+            _results.AddRange(_eylerMethod.GetStepValues());
+            var x = _results.Last().x + h;
+            var y = _results.Last().y;
+            int i = _results.Last().i;
+            while (x < _section.end)
             {
-                yield return (i++, x, y);
-                y += (k1(x, y) + 2 * k2(x, y) + 2 * k3(x, y) + k4(x, y)) * h / 6;
+                y = _results[i].y + h * f(x, y) + 
+                    (h * h / 2) * GetDet1(i) + 
+                    (5 * Math.Pow(h, 3) / 12) * GetDet2(i) + 
+                    (3 * Math.Pow(h, 4) / 8) * GetDet3(i);
+                _results.Add((++i, x, y));
                 x += h;
-            } while (x <= _section.end);
+            } 
         }
-        private double k1(double x, double y) => f(x, y);
-        private double k2(double x, double y) => f(x + h / 2, y + k1(x, y) * h / 2);
-        private double k3(double x, double y) => f(x + h / 2, y + k2(x, y) * h / 2);
-        private double k4(double x, double y) => f(x + h, y + k3(x, y) * h);
+        private double GetDet1(int i) => f(_results[i].x, _results[i].y) - f(_results[i - 1].x, _results[i - 1].y);
+        private double GetDet2(int i) => f(_results[i].x, _results[i].y) - 2 * f(_results[i - 1].x, _results[i - 1].y) + f(_results[i - 2].x, _results[i -2].y);
+        private double GetDet3(int i) => 
+            f(_results[i].x, _results[i].y) - 3 * f(_results[i - 1].x, _results[i - 1].y) + 
+            3 * f(_results[i - 2].x, _results[i - 2].y) - f(_results[i - 3].x, _results[i - 3].y);
     }
 }

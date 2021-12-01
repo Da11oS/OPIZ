@@ -30,6 +30,7 @@ namespace OPIZ
             Console.WriteLine(string.Join("\n", string.Join("\n", gaus.Ys.Select(x => $"{x.i:00}  {x.a:00.000} {x.b :00.000}  {x.y:00.000} "))));
             Lb4();
             Lb5();
+            Lb6();
             Console.ReadKey();
         }
         public static void Lb4 ()
@@ -43,6 +44,12 @@ namespace OPIZ
             Console.WriteLine("Рунге-Кутт");
             Console.WriteLine("i\tx\ty\tf");
             Console.WriteLine(new Eyler(1, 0.1, (0, 1), (x, y) => (y + Math.Cos(x) / 3)).Solve());
+        }
+        public static void Lb6()
+        {
+            Console.WriteLine("Адамс");
+            Console.WriteLine("i\tx\ty\tf");
+            Console.WriteLine(new Adams(1, 0.1, (0, 1), (x, y) => (y + Math.Cos(x) / 3)).Task1());
         }
     }
 }
