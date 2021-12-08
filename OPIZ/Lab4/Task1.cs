@@ -111,7 +111,6 @@ namespace OPIZ.Lab4
     }
     public class Miln : Adams
     {
-        
         public Miln(double y0, double h, (double begin, double end) section, Func<double, double, double> f) : base(y0, h, section, f)
         {
         }
@@ -125,28 +124,28 @@ namespace OPIZ.Lab4
         {
             _results.AddRange(_eylerMethod.GetStepValues());
             List<double> dY = _results.Select(e => f(e.x, e.y)).ToList();
-            var x = _results.Last().x;
-            var y = y0;
+            var x = _results.Last().x+h;
+            var y = _results.Last().y;
             double dy1 = 0;
             double dy2 = 0;
             int i = 3;
-            x += h;
-            while (x <= _section.end) 
+
+            do
             {
-                y = _results[i - 3].y + (4/ 3) * h * (2 * dY[i] - dY[i - 1] + 2 * dY[i - 2]);
-                dy1 = f(_results.Last().x, y);
+                y = _results[i - 3].y + (4 / 3) * h * (2 * dY[i] - dY[i - 1] + 2 * dY[i - 2]);
+                dy1 = f(x, y);
                 while (true)
                 {
-                    y = _results[i - 2].y + (h / 3)  * (dY.Last() + 4 * dY.Last()) + dY[i - 2];
-                    dy2 = f(_results.Last().x, y);
+                    y = _results[i - 1].y + (h / 3) * (dy1 + 4 * dY[i] + dY[i - 1]);
+                    dy2 = f(x, y);
                     if (Math.Abs(dy2 - dy1) < 1e-3) break;
-                    dy1 = dy2; 
+                    dy1 = dy2;
                 }
-                dY.Add(f(_results.Last().x, y));
-                y = _results[i - 2].y + (h / 3) * (dY.Last() + 4 * dY.Last()) + dY[i - 2];
-                _results.Add((i++, x, y));
+                dY.Add(dy2);
+                y = _results[i - 1].y + (h / 3) * (dY[i + 1] + 4 * dY[i] + dY[i - 1]);
+                _results.Add((++i, x, y));
                 x += h;
-            } 
+            } while  (x <= _section.end);
         }
     }
 }
