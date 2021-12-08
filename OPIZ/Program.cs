@@ -31,6 +31,7 @@ namespace OPIZ
             Lb4();
             Lb5();
             Lb6();
+            Lb7();
             Console.ReadKey();
         }
         public static void Lb4 ()
@@ -50,6 +51,12 @@ namespace OPIZ
             Console.WriteLine("Адамс");
             Console.WriteLine("i\tx\ty\tf");
             Console.WriteLine(new Adams(1, 0.1, (0, 1), (x, y) => (y + Math.Cos(x) / 3)).Task1());
+        }
+        public static void Lb7()
+        {
+            Console.WriteLine("Милн");
+            Console.WriteLine("i\tx\ty\tf");
+            Console.WriteLine(new Miln(1, 0.1, (0, 1), (x, y) => (y + Math.Cos(x) / 3)).Task1());
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OPIZ.Lab4
 {
-    class Eyler
+    public class Eyler
     {
         public readonly double y0;
         public readonly double h;
@@ -71,22 +71,22 @@ namespace OPIZ.Lab4
         private double k3(double x, double y) => f(x + h / 2, y + k2(x, y) * h / 2);
         private double k4(double x, double y) => f(x + h , y + k3(x, y) * h);
     }
-    class Adams : Eyler
+    public class Adams : Eyler
     {
-        private Eyler _eylerMethod;
-        private List<(int i, double x, double y)> _results;
+        protected Eyler _eylerMethod;
+        protected List<(int i, double x, double y)> _results;
         public Adams(double y0, double h, (double begin, double end) section, Func<double, double, double> f) : base(y0, h, section, f)
         {
             _results = new ();
 
             _eylerMethod = new Eyler(y0, h, (_section.begin, section.begin + h * 3), f);
         }
-        public string Task1()
+        public virtual string Task1()
         {
             SetResults();
             return string.Join("\n", _results.Select(x => $"{x.i:00}  {x.x:00.000}   {x.y:00.000} {f(x.x, x.y):00.000}"));
         }
-        public void SetResults()
+        public virtual void SetResults()
         {
             //_results.Add((0, _section.begin, y0));
             _results.AddRange(_eylerMethod.GetStepValues());
@@ -108,5 +108,45 @@ namespace OPIZ.Lab4
         private double GetDet3(int i) => 
             f(_results[i].x, _results[i].y) - 3 * f(_results[i - 1].x, _results[i - 1].y) + 
             3 * f(_results[i - 2].x, _results[i - 2].y) - f(_results[i - 3].x, _results[i - 3].y);
+    }
+    public class Miln : Adams
+    {
+        
+        public Miln(double y0, double h, (double begin, double end) section, Func<double, double, double> f) : base(y0, h, section, f)
+        {
+        }
+        public override string Task1()
+        {
+            SetResults();
+            return string.Join("\n", _results.Select(x => $"{x.i:00}  {x.x:00.000}   {x.y:00.000} {f(x.x, x.y):00.000}"));
+        }
+
+        public override void SetResults()
+        {
+            _results.AddRange(_eylerMethod.GetStepValues());
+            List<double> dY = _results.Select(e => f(e.x, e.y)).ToList();
+            var x = _results.Last().x;
+            var y = y0;
+            double dy1 = 0;
+            double dy2 = 0;
+            int i = 3;
+            x += h;
+            while (x <= _section.end) 
+            {
+                y = _results[i - 3].y + (4/ 3) * h * (2 * dY[i] - dY[i - 1] + 2 * dY[i - 2]);
+                dy1 = f(_results.Last().x, y);
+                while (true)
+                {
+                    y = _results[i - 2].y + (h / 3)  * (dY.Last() + 4 * dY.Last()) + dY[i - 2];
+                    dy2 = f(_results.Last().x, y);
+                    if (Math.Abs(dy2 - dy1) < 1e-3) break;
+                    dy1 = dy2; 
+                }
+                dY.Add(f(_results.Last().x, y));
+                y = _results[i - 2].y + (h / 3) * (dY.Last() + 4 * dY.Last()) + dY[i - 2];
+                _results.Add((i++, x, y));
+                x += h;
+            } 
+        }
     }
 }
